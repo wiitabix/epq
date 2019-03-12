@@ -1,0 +1,62 @@
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  display: block;
+  font-family: "Arial", sans-serif;
+  color: #000000;
+  background: #FFFFFF;
+} 
+
+.btn-green {
+  /* pos */
+  position: relative;
+  display: block;
+  top: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  
+  /* shape */
+  width: 200px;
+  height: 150px;
+  border-radius: 20px;
+  
+  /* text */
+  font-size: 200%;
+  text-align: center;
+  line-height: 150px;
+  text-decoration: none;
+  color: #000000;
+  
+  /* looks */
+  background: #009900;
+}
+
+.i-title {
+  text-align: center;
+  vertical-align: middle;
+}
+  
+.plusY {
+  position: absolute;
+  top: 2px;
+  left: calc(100vw - 50px);
+}
+
+.minusY {
+  position: absolute;
+  top: 53px;
+  left: calc(100vw - 50px)
+}
+
+.plusX {
+  position: absolute;
+  top: 2px;
+  left: calc(100vw - 101px);
+}
+
+.minusX {
+  position: absolute;
+  top: 53px;
+  left: calc(100vw - 101px)
+}
