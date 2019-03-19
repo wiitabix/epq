@@ -114,6 +114,7 @@ let setOnClicks = function(graph) {
   document.getElementById("minusX").onclick = graph.zoomOutX;
 };
 
+
 let update = function(graph, funcArr) {
   graph.clearGraph();
   graph.drawLines();
@@ -127,15 +128,23 @@ let update = function(graph, funcArr) {
                                           });
 };
 
+let getMouseCoords = function(e) {
+  let pos = {
+      x: e.pageX - Math.round(window.innerWidth/2),
+      y: -(e.pageY - Math.round(window.innerHeight/2))
+    };
+  console.log(pos.x, pos.y);
+};
+
 //main
 let canvas = document.getElementById("myCanvas");
+canvas.addEventListener("mousemove", function(){ getMouseCoords(event); });
 let MyGraph = new Graph(canvas);
 setOnClicks(MyGraph);
 let funcs = [];
 funcs.push([function (a) {return 2*a+100}, "#00ff00", 1]);
 funcs.push([function (a) {return 2*a}, "#00ff00", 1]);
 funcs.push([function (a) {return 2*a-100}, "#00ff00", 1]);
-
 
 
 update(MyGraph, funcs);
