@@ -78,7 +78,7 @@ function Graph(canvas) {
     ctx.restore();
   };
 
-  this.drawEquation = function(equation, colour, step) {
+  this.drawEquation = function(equation, colour, step, width) {
     ctx.strokeWidth = 2;
     ctx.strokeStyle = colour;
     
@@ -116,11 +116,18 @@ let setOnClicks = function(graph) {
 
 
 let update = function(graph, funcArr) {
+  let x = getMouseX();
+  let y = getMouseY();
   graph.clearGraph();
   graph.drawLines();
   graph.drawAxis();
   for (let i = 0; i<funcArr.length; i++) {
-    graph.drawEquation(funcArr[i][0], funcArr[i][1], funcArr[i][2]);
+    if (funcArr[i][0](x) >= (y-10) && funcArr[i][0](x) <= (y+10)) {
+      console.log('OnFuction: ', funcArr[i][0]);
+      graph.drawEquation(funcArr[i][0],"#ff0000", funcArr[i][2]);
+    } else {
+      graph.drawEquation(funcArr[i][0], funcArr[i][1], funcArr[i][2]);
+    }
   }
   graph.drawNumbers();
   window.requestAnimationFrame(function() {
@@ -128,23 +135,31 @@ let update = function(graph, funcArr) {
                                           });
 };
 
-let getMouseCoords = function(e) {
-  let pos = {
-      x: e.pageX - Math.round(window.innerWidth/2),
-      y: -(e.pageY - Math.round(window.innerHeight/2))
-    };
-  console.log(pos.x, pos.y);
-};
-
 //main
 let canvas = document.getElementById("myCanvas");
-canvas.addEventListener("mousemove", function(){ getMouseCoords(event); });
 let MyGraph = new Graph(canvas);
 setOnClicks(MyGraph);
+
 let funcs = [];
 funcs.push([function (a) {return 2*a+100}, "#00ff00", 1]);
 funcs.push([function (a) {return 2*a}, "#00ff00", 1]);
 funcs.push([function (a) {return 2*a-100}, "#00ff00", 1]);
+
+let x = null;
+let y = null;
+document.addEventListener('mousemove', onMouseUpdate, false);function onMouseUpdate(e) {
+    x = e.pageX - Math.round(window.innerWidth/2);
+    y = -(e.pageY - Math.round(window.innerHeight/2));
+}
+
+function getMouseX() {
+    return x;
+}
+
+function getMouseY() {
+    return y;
+}
+
 
 
 update(MyGraph, funcs);
