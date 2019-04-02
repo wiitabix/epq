@@ -78,8 +78,8 @@ function Graph(canvas) {
     ctx.restore();
   };
 
-  this.drawEquation = function(equation, colour, step, width) {
-    ctx.strokeWidth = 2;
+  this.drawEquation = function(equation, colour, width, step) {
+    ctx.lineWidth = width;
     ctx.strokeStyle = colour;
     
     for (let x = -xMax; x < xMax; x= x+step) {
@@ -87,6 +87,16 @@ function Graph(canvas) {
         ctx.moveTo(x, (yScale*equation(x/xScale)));
         ctx.lineTo((x+step), (yScale*equation((x+step)/xScale)));
         ctx.stroke();
+    }
+  };
+    
+  this.drawEquations = function(funcArr, x, y) {
+    for (let i = 0; i<funcArr.length; i++) {
+      if ((funcArr[i][0](x/xScale)*yScale) >= y-10 && (funcArr[i][0](x/xScale)*yScale) <= y+10) {
+        this.drawEquation(funcArr[i][0], '#ff0000', 4, 1);
+      } else {
+        this.drawEquation(funcArr[i][0], funcArr[i][1], 3, 1);
+      }
     }
   };
   
@@ -121,14 +131,7 @@ let update = function(graph, funcArr) {
   graph.clearGraph();
   graph.drawLines();
   graph.drawAxis();
-  for (let i = 0; i<funcArr.length; i++) {
-    if (funcArr[i][0](x) >= (y-10) && funcArr[i][0](x) <= (y+10)) {
-      console.log('OnFuction: ', funcArr[i][0]);
-      graph.drawEquation(funcArr[i][0],"#ff0000", funcArr[i][2]);
-    } else {
-      graph.drawEquation(funcArr[i][0], funcArr[i][1], funcArr[i][2]);
-    }
-  }
+  graph.drawEquations(funcArr, x, y);
   graph.drawNumbers();
   window.requestAnimationFrame(function() {
                                             update(graph, funcArr);
@@ -141,9 +144,10 @@ let MyGraph = new Graph(canvas);
 setOnClicks(MyGraph);
 
 let funcs = [];
-funcs.push([function (a) {return 2*a+100}, "#00ff00", 1]);
-funcs.push([function (a) {return 2*a}, "#00ff00", 1]);
-funcs.push([function (a) {return 2*a-100}, "#00ff00", 1]);
+funcs.push([function (a) {return 2*a+100}, "#00ff00"]);
+funcs.push([function (a) {return 2*a}, "#00ff00"]);
+funcs.push([function (a) {return 2*a-100}, "#00ff00"]);
+funcs.push([function (a) {return a*a}, "#00ff00"]);
 
 let x = null;
 let y = null;
@@ -166,5 +170,5 @@ update(MyGraph, funcs);
 //graph.drawEquation(function (a) {return 2*a}, "#00ff00", 1);
 //graph.drawEquation(function (a) {return a*a}, "#00ff00", 1);
 //graph.drawEquation(function (a) {return a*a*a+20*a*a+50*a-200}, "#ff0000", 1);
-//graph.drawEquation(function (a) {return Math.sin(a)}, "#0000ff", 0.01, 20, 300); //buttons for scale, render loop, 2D array of params for drawequation!!!!!!!!!!!!!!!!!!!!
+//graph.drawEquation(function (a) {return Math.sin(a)}, "#0000ff", 0.01, 20, 300);
 //graph.drawEquation(function (a) {return (1/a)+100}, "#ff00ff", 1);
