@@ -60,3 +60,11 @@ body {
   top: 53px;
   left: calc(100vw - 101px)
 }
+
+.pInput{
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  top: 0;
+  left: 5px;
+}
