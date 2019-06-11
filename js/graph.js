@@ -94,7 +94,7 @@ function Graph(canvas) {
     for (let i = 0; i<funcArr.length; i++) {
       if ((funcArr[i][0](x/xScale)*yScale) >= y-10 && (funcArr[i][0](x/xScale)*yScale) <= y+10) {
         this.drawEquation(funcArr[i][0], '#ff0000', 4, 1);
-        this.drawNumberBox(x,y);
+        this.drawNumberBox(x,y,xScale,yScale);
       } else {
         this.drawEquation(funcArr[i][0], funcArr[i][1], 3, 1);
       }
@@ -117,7 +117,7 @@ function Graph(canvas) {
     yScale = yScale - 0.1;
   };
   
-  this.drawNumberBox = function(x,y) {
+  this.drawNumberBox = function(x,y,xScale,yScale) {
     ctx.save();
     ctx.fillStyle = '#bab5a8';
     ctx.fillRect(x-72,y,70,20);
@@ -125,10 +125,10 @@ function Graph(canvas) {
     ctx.textAlign = "right";
     ctx.font = '15px sans-serif';
     ctx.fillStyle = '#000000';
-    ctx.fillText(x,x-42,-y-5);
+    ctx.fillText(Math.trunc(x/xScale),x-42,-y-5);
     ctx.fillText(',',x-37,-y-6);
     ctx.textAlign = "left";
-    ctx.fillText(y,x-33,-y-5);
+    ctx.fillText(Math.trunc(y*yScale),x-33,-y-5);
     ctx.restore();
   };
 }
@@ -147,8 +147,8 @@ let update = function(graph, funcArr) {
   graph.clearGraph();
   graph.drawLines();
   graph.drawAxis();
-  graph.drawEquations(funcArr, x, y);
   graph.drawNumbers();
+  graph.drawEquations(funcArr, x, y);
   window.requestAnimationFrame(function() {
                                             update(graph, funcArr);
                                           });
