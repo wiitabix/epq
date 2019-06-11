@@ -141,20 +141,22 @@ let setOnClicks = function(graph) {
 };
 
 
-let update = function(graph, funcArr) {
+let update = function(graph, funcArr, eInput) {
   let x = getMouseX();
   let y = getMouseY();
+  manageInput(eInput);
   graph.clearGraph();
   graph.drawLines();
   graph.drawAxis();
   graph.drawNumbers();
   graph.drawEquations(funcArr, x, y);
   window.requestAnimationFrame(function() {
-                                            update(graph, funcArr);
+                                            update(graph, funcArr, eInput);
                                           });
 };
 
 //main
+let eInput = document.getElementById("tInput");
 let canvas = document.getElementById("myCanvas");
 let MyGraph = new Graph(canvas);
 setOnClicks(MyGraph);
@@ -180,9 +182,14 @@ function getMouseY() {
     return y;
 }
 
+function manageInput(eInput) {
+  console.log(eInput.value);
+}
+  
+  
 
 
-update(MyGraph, funcs);
+update(MyGraph, funcs, eInput);
 //graph.drawEquation(function (a) {return 2*a}, "#00ff00", 1);
 //graph.drawEquation(function (a) {return a*a}, "#00ff00", 1);
 //graph.drawEquation(function (a) {return a*a*a+20*a*a+50*a-200}, "#ff0000", 1);
