@@ -144,7 +144,6 @@ let setOnClicks = function(graph) {
 let update = function(graph, funcArr, eInput) {
   let x = getMouseX();
   let y = getMouseY();
-  manageInput(eInput);
   graph.clearGraph();
   graph.drawLines();
   graph.drawAxis();
@@ -162,9 +161,9 @@ let MyGraph = new Graph(canvas);
 setOnClicks(MyGraph);
 
 let funcs = [];
-funcs.push([function (a) {return 2*a+100}, "#00ff00"]);
-funcs.push([function (a) {return 2*a}, "#00ff00"]);
-funcs.push([function (a) {return 2*a-100}, "#00ff00"]);
+//funcs.push([function (a) {return 2*a+100}, "#00ff00"]);
+//funcs.push([function (a) {return 2*a}, "#00ff00"]);
+//funcs.push([function (a) {return 2*a-100}, "#00ff00"]);
 //funcs.push([function (a) {return a*a}, "#00ff00"]);
 
 let x = null;
@@ -182,10 +181,10 @@ function getMouseY() {
     return y;
 }
 
-function manageInput(eInput) {
-  console.log(eInput.value);
+function submit() {
+  //funcs.push([new Function('x', 'return ' + eInput.value), "#00ff00"]);
 }
-  
+
   
 
 
