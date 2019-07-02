@@ -2,8 +2,5 @@ website at: https://epq.neocities.org/
 
 todo:
 
--mousover showing values
-
--intersections
-
--ui
+-allow user input
+-general tidying up and qol
