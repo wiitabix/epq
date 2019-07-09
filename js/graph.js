@@ -182,9 +182,19 @@ function getMouseY() {
 }
 
 function submit() {
-  //funcs.push([new Function('x', 'return ' + eInput.value), "#00ff00"]);
+  let string = eInput.value;
+  string = string.replace(/sin/gi, 'Math.sin');
+  string = string.replace(/cos/gi, 'Math.cos');
+  string = string.replace(/tan/gi, 'Math.tan');
+  string = string.replace(/[0-9]x/g, '$&' + 'product');
+  string = string.replace(/xproduct/g, '*x');
+  string = string.replace(/\^/g, '**');
+  
+  console.log(string);
+  //funcs.push([new Function('x', 'return ' + string), "#00ff00"]);
 }
 
+  
   
 
 
