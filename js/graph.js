@@ -155,6 +155,7 @@ let update = function(graph, funcArr, eInput) {
 };
 
 //main
+let tEquations = document.getElementById("equations");
 let eInput = document.getElementById("tInput");
 let canvas = document.getElementById("myCanvas");
 let MyGraph = new Graph(canvas);
@@ -192,6 +193,9 @@ function submit() {
   
   console.log(string);
   //funcs.push([new Function('x', 'return ' + string), "#00ff00"]);
+  var br = document.createElement("br");
+  tEquations.appendChild(br);
+  tEquations.appendChild(document.createTextNode(string));
 }
 
   
