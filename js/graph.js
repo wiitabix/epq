@@ -92,12 +92,14 @@ function Graph(canvas) {
     
   this.drawEquations = function(funcArr, x, y) {
     for (let i = 0; i<funcArr.length; i++) {
-      if ((funcArr[i][0](x/xScale)*yScale) >= y-10 && (funcArr[i][0](x/xScale)*yScale) <= y+10) {
-        this.drawEquation(funcArr[i][0], '#ff0000', 4, 1);
-        this.drawNumberBox(x,y,xScale,yScale);
-      } else {
-        this.drawEquation(funcArr[i][0], funcArr[i][1], 3, 1);
-      }
+        if (funcArr[i] !== "blank") {
+          if ((funcArr[i][0](x/xScale)*yScale) >= y-10 && (funcArr[i][0](x/xScale)*yScale) <= y+10) {
+            this.drawEquation(funcArr[i][0], '#ff0000', 4, 1);
+            this.drawNumberBox(x,y,xScale,yScale);
+          } else {
+            this.drawEquation(funcArr[i][0], funcArr[i][1], 3, 1);
+          }
+        }
     }
   };
   
@@ -133,6 +135,30 @@ function Graph(canvas) {
   };
 }
 
+function equationBox(number, div, t, sBut, dBut, funcs) {
+  let divider = document.getElementById(div);
+  let submitButton = document.getElementById(sBut);
+  let delButton = document.getElementById(dBut);
+  let text = document.getElementById(t);
+  let colour = '#000000';
+  
+  this.clear = function() {
+    text.value = 'Input equation';
+    funcs[number-1] = "blank";
+  }; 
+  
+  this.submit = function() {
+    let string = text.value;
+    string = string.replace(/sin/gi, 'Math.sin');
+    string = string.replace(/cos/gi, 'Math.cos');
+    string = string.replace(/tan/gi, 'Math.tan');
+    string = string.replace(/[0-9]x/g, '$&' + 'product');
+    string = string.replace(/xproduct/g, '*x');
+    string = string.replace(/\^/g, '**');
+    //funcs[number-1] = [new Function('x', 'return ' + string), colour];
+  };
+}
+
 let setOnClicks = function(graph) {
   document.getElementById("plusY").onclick = graph.zoomInY;
   document.getElementById("minusY").onclick = graph.zoomOutY;
@@ -162,10 +188,20 @@ let MyGraph = new Graph(canvas);
 setOnClicks(MyGraph);
 
 let funcs = [];
-//funcs.push([function (a) {return 2*a+100}, "#00ff00"]);
-//funcs.push([function (a) {return 2*a}, "#00ff00"]);
-//funcs.push([function (a) {return 2*a-100}, "#00ff00"]);
-//funcs.push([function (a) {return a*a}, "#00ff00"]);
+for (let i=0; i<10; i++){
+  funcs.push("blank");
+}
+
+let box1 = new equationBox(1, "equation1", "text1", "sbutton1", "dbutton1", funcs);
+let box2 = new equationBox(2, "equation2", "text2", "sbutton2", "dbutton2", funcs);
+let box3 = new equationBox(3, "equation3", "text3", "sbutton3", "dbutton3", funcs);
+let box4 = new equationBox(4, "equation4", "text4", "sbutton4", "dbutton4", funcs);
+let box5 = new equationBox(5, "equation5", "text5", "sbutton5", "dbutton5", funcs);
+let box6 = new equationBox(6, "equation6", "text6", "sbutton6", "dbutton6", funcs);
+let box7 = new equationBox(7, "equation7", "text7", "sbutton7", "dbutton7", funcs);
+let box8 = new equationBox(8, "equation8", "text8", "sbutton8", "dbutton8", funcs);
+let box9 = new equationBox(9, "equation9", "text9", "sbutton9", "dbutton9", funcs);
+let box10 = new equationBox(10, "equation10", "text10", "sbutton10", "dbutton10", funcs);
 
 let x = null;
 let y = null;
@@ -182,29 +218,4 @@ function getMouseY() {
     return y;
 }
 
-function submit() {
-  let string = eInput.value;
-  string = string.replace(/sin/gi, 'Math.sin');
-  string = string.replace(/cos/gi, 'Math.cos');
-  string = string.replace(/tan/gi, 'Math.tan');
-  string = string.replace(/[0-9]x/g, '$&' + 'product');
-  string = string.replace(/xproduct/g, '*x');
-  string = string.replace(/\^/g, '**');
-  
-  console.log(string);
-  //funcs.push([new Function('x', 'return ' + string), "#00ff00"]);
-  var br = document.createElement("br");
-  tEquations.appendChild(br);
-  tEquations.appendChild(document.createTextNode(string));
-}
-
-  
-  
-
-
 update(MyGraph, funcs, eInput);
-//graph.drawEquation(function (a) {return 2*a}, "#00ff00", 1);
-//graph.drawEquation(function (a) {return a*a}, "#00ff00", 1);
-//graph.drawEquation(function (a) {return a*a*a+20*a*a+50*a-200}, "#ff0000", 1);
-//graph.drawEquation(function (a) {return Math.sin(a)}, "#0000ff", 0.01, 20, 300);
-//graph.drawEquation(function (a) {return (1/a)+100}, "#ff00ff", 1);
