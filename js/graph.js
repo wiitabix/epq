@@ -81,7 +81,6 @@ function Graph(canvas) {
   this.drawEquation = function(equation, colour, width, step) {
     ctx.lineWidth = width;
     ctx.strokeStyle = colour;
-    
     for (let x = -xMax; x < xMax; x= x+step) {
         ctx.beginPath();
         ctx.moveTo(x, (yScale*equation(x/xScale)));
@@ -93,13 +92,19 @@ function Graph(canvas) {
   this.drawEquations = function(funcArr, x, y) {
     for (let i = 0; i<funcArr.length; i++) {
         if (funcArr[i] !== "blank") {
-          if ((funcArr[i][0](x/xScale)*yScale) >= y-10 && (funcArr[i][0](x/xScale)*yScale) <= y+10) {
-            this.drawEquation(funcArr[i][0], '#ff0000', 4, 1);
-            this.drawNumberBox(x,y,xScale,yScale);
-          } else {
-            this.drawEquation(funcArr[i][0], funcArr[i][1], 3, 1);
-          }
+          this.drawEquation(funcArr[i][0], funcArr[i][1], 3, 1);
         }
+    }
+  };
+  
+  this.drawHighlightedEquation = function(funcArr, x, y) {
+    for (let i = 0; i<funcArr.length; i++) {
+      if (funcArr[i] !== "blank") {
+        if ((funcArr[i][0](x/xScale)*yScale) >= y-10 && (funcArr[i][0](x/xScale)*yScale) <= y+10) {
+          this.drawEquation(funcArr[i][0], '#ff0000', 4, 1);
+          this.drawNumberBox(x,y,xScale,yScale, funcArr[i][0]);
+        }
+      }
     }
   };
   
@@ -119,7 +124,7 @@ function Graph(canvas) {
     yScale = yScale - 0.1;
   };
   
-  this.drawNumberBox = function(x,y,xScale,yScale) {
+  this.drawNumberBox = function(x,y,xScale,yScale, func) {
     ctx.save();
     ctx.fillStyle = '#bab5a8';
     ctx.fillRect(x-72,y,70,20);
@@ -130,7 +135,7 @@ function Graph(canvas) {
     ctx.fillText(Math.trunc(x/xScale),x-42,-y-5);
     ctx.fillText(',',x-37,-y-6);
     ctx.textAlign = "left";
-    ctx.fillText(Math.trunc(y*yScale),x-33,-y-5);
+    ctx.fillText(Math.trunc(func(x/xScale)),x-33,-y-5);
     ctx.restore();
   };
 }
@@ -143,7 +148,7 @@ function equationBox(number, div, t, sBut, dBut, funcs) {
   let colour = '#000000';
   
   this.clear = function() {
-    text.value = 'Input equation';
+    text.value = '';
     funcs[number-1] = "blank";
   }; 
   
@@ -155,7 +160,7 @@ function equationBox(number, div, t, sBut, dBut, funcs) {
     string = string.replace(/[0-9]x/g, '$&' + 'product');
     string = string.replace(/xproduct/g, '*x');
     string = string.replace(/\^/g, '**');
-    //funcs[number-1] = [new Function('x', 'return ' + string), colour];
+    funcs[number-1] = [new Function('x', 'return ' + string), colour];
   };
 }
 
@@ -175,6 +180,7 @@ let update = function(graph, funcArr, eInput) {
   graph.drawAxis();
   graph.drawNumbers();
   graph.drawEquations(funcArr, x, y);
+  graph.drawHighlightedEquation(funcArr, x, y);
   window.requestAnimationFrame(function() {
                                             update(graph, funcArr, eInput);
                                           });
