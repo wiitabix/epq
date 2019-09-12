@@ -157,6 +157,10 @@ function equationBox(number, div, t, sBut, dBut, funcs) {
     string = string.replace(/sin/gi, 'Math.sin');
     string = string.replace(/cos/gi, 'Math.cos');
     string = string.replace(/tan/gi, 'Math.tan');
+    string = string.replace(/abs/gi, 'Math.abs');
+    string = string.replace(/ceil/gi, 'Math.ceil');
+    string = string.replace(/floor/gi, 'Math.floor');
+    string = string.replace(/sqrt/gi, 'Math.sqrt');
     string = string.replace(/[0-9]x/g, '$&' + 'product');
     string = string.replace(/xproduct/g, '*x');
     string = string.replace(/\^/g, '**');
